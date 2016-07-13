@@ -1,0 +1,338 @@
+<html>
+<head>
+	<title>Momentum Test</title>
+	
+  <!-- ... -->
+  <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="bower_components/moment/min/moment.min.js"></script>
+  <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Arvo' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <link rel="stylesheet" href="bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+  
+  <!-- <script type="text/javascript" src = "bloodhound/bloodhound.js"></script> -->
+  <!-- <script type="text/javascript" src = "bloodhound/typeahead.bundle.js"></script> -->
+  <!-- <script type="text/javascript" src = "bloodhound/typeahead.jquery.js"></script> -->
+  <!-- <script type="text/javascript" src = "bloodhound/bootstrap-tokenfield.min.js"></script> -->
+  <!-- <link rel="stylesheet" type="text/css" href="bloodhound/bootstrap-tokenfield.css"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="css/example.css"> -->
+  <!-- <script type="text/javascript" src = "bloodhound/bootstrap-typeahead.js"></script> -->
+
+</head>
+
+<body>
+
+	
+    <!-- <section id="first">
+    <div class="container banner-container">
+      <div class="row first-con">
+        <div class="col-sm-12">
+          <div class="row">
+            <div class="col-sm-6 col-sm-offset-3" id="banner-heading" >
+              <h1>AIMS QUANT</h1><br>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-10 col-sm-offset-1" id="banner-txt">
+              <h4>Get the Power to anlyse how the stocks are playing and get into Momentum Investing.
+              </h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>  
+  </section> -->
+
+  <div class = "container">
+
+    <section id="second">
+      <h1>AIMS QUANT</h1>
+      <h3>Select the Stock Symbols and time period to analyse.</h3><br>
+  		<form>
+        <ul class="list-group">
+          <li class="list-group-item">
+            
+            <span id = "inlineCheckbox1">SAIL<input class="check" style="float : right" type="checkbox" id="inlineCheckbox1" value="SAIL">        
+          </li>
+          <li class="list-group-item">
+            
+            <span id = "inlineCheckbox2">ABB<input class="check" style="float : right" type="checkbox" id="inlineCheckbox2" value="ABB">        
+          </li>
+          <li class="list-group-item">
+            
+            <span id = "inlineCheckbox3">OIL<input class="check" style="float : right" type="checkbox" id="inlineCheckbox3" value="OIL">        
+          </li>
+          <li class="list-group-item">
+            
+            <span id = "inlineCheckbox4">PFC<input class="check" style="float : right" type="checkbox" id="inlineCheckbox4" value="PFC">        
+          </li>
+          <li class="list-group-item">
+            
+            <span id = "inlineCheckbox5">DLF<input class="check" style="float : right" type="checkbox" id="inlineCheckbox5" value="DLF">        
+          </li>
+
+        </ul>
+  			<div class="form-group">
+          <div class="row" style= "margin-bottom : 2%;">
+    				<div id="bloodhound" class="example">
+              <!-- <input class="typeahead" name = "Symbol" type="text" placeholder="Stock Symbols"> -->
+            </div>
+          </div> 
+  				  <div class='col-md-5'>
+              <div class="form-group">
+                <div class='input-group date' id='datetimepicker6'>
+                    <input type='text' name = "start-date" class="form-control" placeholder="Start Date" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+              </div>
+            </div>
+          <div class='col-md-5'>
+            <div class="form-group">
+              <div class='input-group date' id='datetimepicker7'>
+                  <input type='text' name = "end-date" class="form-control" placeholder="Finish Date" />
+                  <span class="input-group-addon">
+                      <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+              </div>
+            </div>
+          </div>
+        </div>
+          <button class="btn" type="submit" id="submit"> ANALYSE </button>
+  		</form>
+
+      <div class="response-table">
+        <h2 id="query-term">Analysis for the Stock Symbols </h2>
+        <table class="table table-hover">
+            <thead>
+              <tr style = "color : white">
+                <th>Symbol</th>
+                <th>Rpast</th>
+                <th>Rfuture</th>
+              </tr>
+            </thead>
+            <tbody id="table-1">
+              
+            </tbody>
+        </table>
+       </div> 
+       <br><br>
+
+       <div class = "response-table">
+        <h2 id="query-term">Sorted Table </h2>
+        <table class="table table-hover">
+            <thead>
+              <tr style = "color : white">
+                <th>Symbol</th>
+                <th>Rpast</th>
+                <th>Rfuture</th>
+              </tr>
+            </thead>
+            <tbody id="table-2">
+              
+            </tbody>
+        </table>
+       </div> 
+        
+      </div>
+
+  	</section>
+   </div> 
+
+
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script> -->
+
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker6').datetimepicker({
+          format : 'YYYY-MM-DD',
+          minDate : '2016-01-01',
+          maxDate : new Date()
+        });
+        $('#datetimepicker7').datetimepicker({
+            useCurrent: false, //Important! See issue #1075
+            format : 'YYYY-MM-DD',
+            maxDate : new Date()
+
+        });
+        $("#datetimepicker6").on("dp.change", function (e) {
+            // e.date : ""
+            $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+        });
+        $("#datetimepicker7").on("dp.change", function (e) {
+            $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+        });
+    });
+</script>
+
+<script type="text/javascript">
+  $('#submit').on('click', function(e) {
+  e.preventDefault();
+  var checkedValues = $('.check:checked').map(function() {
+    return this.value;
+  }).get();
+  var rPastArray = [];
+  var rFutureArray = [];
+
+  $.each(checkedValues, function(i){
+    
+      var formData = {
+        'symbol' : checkedValues[i],
+        'startDate' : $('input[name=start-date]').val(),
+        'endDate' : $('input[name=end-date]').val()
+      }
+      var api_url = "https://www.quandl.com/api/v3/datasets/NSE/" + formData['symbol'] + ".json?api_key=gWf2CLShwrGUBVnqzsT4&start_date=" +formData['startDate'] + "&end_date=" + formData['endDate'] + "yyyy-mm-dd"  
+
+      // console.log(api_url);
+      $.ajax({
+        type: 'GET',
+        url : api_url,
+        data : formData,
+        dataType : 'json',
+        success : function(response){
+          len = response['dataset']['data'].length
+          resArray = response['dataset']['data']
+          console.log(resArray)
+          
+          mid = parseInt(len/2);
+          // console.log(mid);
+          // console.log(resArray[0][1]);
+          // console.log(resArray[mid-1][7]);
+          // console.log(resArray[mid][1]);
+          // console.log(resArray[len-1][7]);
+          var rPast = Math.log(resArray[mid-1][7]/(resArray[mid][1]));
+          var rFuture = Math.log(resArray[len-1][7]/(resArray[mid][1]));
+          // console.log();
+          // console.log(rPast);
+          // console.log(rFuture);
+          rPastArray.push(rPast);
+          rFutureArray.push(rFuture);
+          console.log(rPastArray)
+
+          // table to show the results of the rpast and rfurture for the searched symbol
+          $('.response-table').css({'display': "block"});
+          
+          $('#table-1').append('<tr style = "color : white"><td style = "color : white">' + formData['symbol'] + '</td>\
+            <td>' + rPast + '</td><td>' + rFuture + '</td></tr>');
+
+
+          // rPastArray.sort(function(a, b){return b-a});
+          // rFutureArray.sort(function(a, b){return b-a});
+
+          // lenRPastArray = rPastArray.length;
+          // lenRFutureArray = rFuture.length;
+
+
+        },
+        error: function(xhr){
+          $('#query-term').innerHtml("Sorry! No results for the query entered. Please Try Again.");
+          console.log("An error occured!! ")
+
+        },
+
+       });
+    });
+    rPastArray.sort(function(a, b){return b-a});
+    rFutureArray.sort(function(a, b){return b-a});
+    // console.log("jjsahdkjha")
+    console.log(rPastArray);
+
+    $.each(checkedValues, function(i) {
+      console.log(checkedValues[i])
+      $('#table-2').append('<tr style = "color : white"><td style = "color : white">' + checkedValues[i] + '</td>\
+            <td>' + rPastArray[i] + '</td><td>' + rFutureArray[i] + '</td></tr>');
+    });
+
+});
+  // $('#submit').on('click', function(e) {
+  //     e.preventDefault();
+  //     var formData = JSON.stringify($('form').serializeArray());
+  //     console.log(formData);
+  // });
+  
+</script>
+
+
+</body>
+
+</html>
+
+
+<!-- e table-condensed">
+          <thead>
+            <tr>
+              <th>Company Name</th>
+              <th>Industry</th>
+              <th>Symbol</th>
+            </tr>
+            <tr>
+              <td>ABB India Ltd.</td>
+              <td>INDUSTRIAL MANUFACTURING</td>
+              <td>ABB</td>
+            </tr>
+            <tr>
+              <td>Steel Authority of India</td>
+              <td>METALS</td>
+              <td>SAIL</td>
+             </tr> 
+             <tr>
+              <td>Steel Authority of India</td>
+              <td>METALS</td>
+              <td>SAIL</td>
+             </tr> 
+             <tr>
+              <td>Steel Authority of India</td>
+              <td>METALS</td>
+              <td>SAIL</td>
+             </tr> 
+             <tr>
+              <td>Steel Authority of India</td>
+              <td>METALS</td>
+              <td>SAIL</td>
+             </tr>             
+             <tr>
+              <td>Steel Authority of India</td>
+              <td>METALS</td>
+              <td>SAIL</td>
+             </tr> 
+             <tr>
+              <td>Steel Authority of India</td>
+              <td>METALS</td>
+              <td>SAIL</td>
+             </tr> 
+             <tr>
+              <td>Steel Authority of India</td>
+              <td>METALS</td>
+              <td>SAIL</td>
+             </tr> 
+             <tr>
+              <td>Steel Authority of India</td>
+              <td>METALS</td>
+              <td>SAIL</td>
+             </tr> 
+             <tr>
+              <td>Steel Authority of India</td>
+              <td>METALS</td>
+              <td>SAIL</td>
+             </tr> 
+             <tr>
+              <td>Steel Authority of India</td>
+              <td>METALS</td>
+              <td>SAIL</td>
+             </tr> 
+             <tr>
+              <td>Steel Authority of India</td>
+              <td>METALS</td>
+              <td>SAIL</td>
+             </tr> 
+             <tr>
+              <td>Steel Authority of India</td>
+              <td>METALS</td>
+              <td>SAIL</td>
+             </tr> 
+          </thead>
+        </table> -->

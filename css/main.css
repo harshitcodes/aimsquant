@@ -1,0 +1,38 @@
+
+body
+{
+	/*color: #nt;*/
+	margin: 0px;	
+	text-align: justify;
+	background-image: -webkit-linear-gradient(top, #1A3742, #9EA183);
+}
+h1,h2,h3{
+	font-family: Arvo;
+	color: #fff;
+}
+span,p,h4,h5,h6{
+	font-family: Ubuntu;
+	/*color: #fff;*/
+}
+
+.container {
+  max-width: 750px;
+  margin: 0 auto;
+  /*text-align: center;*/
+}
+
+
+
+#second{
+	margin-top: 70px;
+}
+#second h1, h3{
+	text-align: center;
+}
+
+
+
+
+.response-table{
+	display: None;
+}
