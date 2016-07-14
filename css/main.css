@@ -46,7 +46,9 @@ span,p,h4,h5,h6{
 #moment-table{
 	display: none;
 }
-
+#display-btn{
+	display: none;
+}
 
 .response-table{
 	display: None;

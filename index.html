@@ -172,7 +172,7 @@
 
        <button id="tab-2" class="btn">Top and Bottom Results</button>
        <br><br>
-       <div class = "response-table" id="top-table">
+       <div class = "response-tabl" id="top-table">
         <h2 id="query-term">Top Results Based on Rpast </h2>
         <table class="table table-hover">
             <thead>
@@ -188,7 +188,7 @@
         </table>
        </div> 
 
-       <div class = "response-table" id="bottom-table">
+       <div class = "response-tabe" id="bottom-table">
         <h2 id="query-term">Bottom Results Based on Rpast</h2>
         <table class="table table-hover">
             <thead>
@@ -205,7 +205,7 @@
        </div> 
        
        <button id="momentum" class="btn">Find Momentum</button>
-       <div class = "response-table" id="moment-table">
+       <div class = "response-tabe" id="moment-table">
         <h2 id="query-term">Momentum Analysis Table</h2>
         <table class="table table-hover" >
             <thead>
@@ -259,7 +259,7 @@
   $('#tab-2').css({'display' : 'block'});
   // $('.response-table').innerHtml(" ");
   $('#table-1').html(" ");
-  
+   
   // $()
   var checkedValues = $('.check:checked').map(function() {
     return this.value;
@@ -323,6 +323,8 @@
         $('#table-2').html(" ");
         $('#table-3').html(" ");
         $('#table-4').html(" ");
+        $('#top-table').css({'display' : 'block'});
+        $('#bottom-table').css({'display' : 'block'});
         function sortByRpast(a, b){
           var aValue = a.value;
           var bValue = b.value;
@@ -359,7 +361,7 @@
 
         $('#momentum').css({'display' : 'block'})
         $('#momentum').on('click', function(){
-      
+          $('#moment-table').css({'display' : 'block'});
           console.log("in moment");
           $('#table-4').append('<tr style = "color : white"><td style = "color : white">' + positiveMoment + '</td>\
           <td>' + negMoment + '</td><td>' + diff + '</td></tr>');
