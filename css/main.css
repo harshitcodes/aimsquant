@@ -5,6 +5,7 @@ body
 	margin: 0px;	
 	text-align: justify;
 	background-image: -webkit-linear-gradient(top, #1A3742, #9EA183);
+	margin-bottom: 50px;
 }
 h1,h2,h3{
 	font-family: Arvo;
@@ -30,7 +31,21 @@ span,p,h4,h5,h6{
 	text-align: center;
 }
 
-
+#momentum{
+	display: none;
+}
+#tab-2{
+	display: none;
+}
+#top-table{
+	display: none;
+}
+#bottom-table{
+	display: none;
+}
+#moment-table{
+	display: none;
+}
 
 
 .response-table{

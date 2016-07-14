@@ -151,6 +151,7 @@
         </div>
           <button class="btn" type="submit" id="submit"> ANALYSE </button>
   		</form>
+      <br><br><br><br><br>
 
       <div class="response-table">
         <h2 id="query-term">Analysis for the Stock Symbols </h2>
@@ -169,9 +170,9 @@
        </div> 
        <br><br>
 
-       <button class="btn" id="tab-2">Table-2</button>
+       <button id="tab-2" class="btn">Top and Bottom Results</button>
        <br><br>
-       <div class = "response-table">
+       <div class = "response-table" id="top-table">
         <h2 id="query-term">Top Results Based on Rpast </h2>
         <table class="table table-hover">
             <thead>
@@ -187,7 +188,7 @@
         </table>
        </div> 
 
-       <div class = "response-table">
+       <div class = "response-table" id="bottom-table">
         <h2 id="query-term">Bottom Results Based on Rpast</h2>
         <table class="table table-hover">
             <thead>
@@ -202,7 +203,24 @@
             </tbody>
         </table>
        </div> 
-        
+       
+       <button id="momentum" class="btn">Find Momentum</button>
+       <div class = "response-table" id="moment-table">
+        <h2 id="query-term">Momentum Analysis Table</h2>
+        <table class="table table-hover" >
+            <thead>
+              <tr style = "color : white">
+                <th>Positive Momentum</th>
+                <th>Negative Momentum</th>
+                <th>Difference</th>
+              </tr>
+            </thead>
+            <tbody id="table-4">
+              
+            </tbody>
+        </table>
+       </div> 
+
       </div>
       
   	</section>
@@ -238,7 +256,11 @@
 <script type="text/javascript">
   $('#submit').on('click', function(e) {
   e.preventDefault();
+  $('#tab-2').css({'display' : 'block'});
   // $('.response-table').innerHtml(" ");
+  $('#table-1').html(" ");
+  
+  // $()
   var checkedValues = $('.check:checked').map(function() {
     return this.value;
   }).get();
@@ -267,11 +289,6 @@
           console.log(resArray)
           
           mid = parseInt(len/2);
-          // console.log(mid);
-          // console.log(resArray[0][1]);
-          // console.log(resArray[mid-1][7]);
-          // console.log(resArray[mid][1]);
-          // console.log(resArray[len-1][7]);
           var rPast = Math.log(resArray[mid-1][7]/(resArray[mid][1]));
           var rFuture = Math.log(resArray[len-1][7]/(resArray[mid][1]));
           
@@ -303,8 +320,9 @@
     });
 
     $('#tab-2').on('click', function(){
-        console.log("in table-2");
-        console.log(rPastDictList);
+        $('#table-2').html(" ");
+        $('#table-3').html(" ");
+        $('#table-4').html(" ");
         function sortByRpast(a, b){
           var aValue = a.value;
           var bValue = b.value;
@@ -314,27 +332,41 @@
         rPastDictList.sort(sortByRpast);
         console.log(rPastDictList);  
         lenRpastList = rPastDictList.length;
-        reqlen = 0.1*(lenRpastList); 
+        reqlen = parseInt(0.1*(lenRpastList)); 
         console.log(reqlen);
+        var positiveSum = 0;
+        var negSum = 0;
         for(var i =0; i<=reqlen; i++){
-          
+          positiveSum += rPastDictList[i]["rfut"];
           $('#table-2').append('<tr style = "color : white"><td style = "color : white">' + rPastDictList[i]["key"] + '</td>\
           <td>' + rPastDictList[i]["value"] + '</td><td>' + rPastDictList[i]["rfut"] + '</td></tr>');
 
         }
 
-        for(var i =reqlen-1; i>=0; i--){
-          
+        for(var i =reqlen; i>=parseInt(reqlen/2); i--){
+          negSum += rPastDictList[i]["rfut"];
+          console.log(rPastDictList[i]["key"]); 
           $('#table-3').append('<tr style = "color : white"><td style = "color : white">' + rPastDictList[i]["key"] + '</td>\
           <td>' + rPastDictList[i]["value"] + '</td><td>' + rPastDictList[i]["rfut"] + '</td></tr>');
 
         }
         
         
-    });  
-        
-    
+        positiveMoment = positiveSum/(reqlen + 1)
+        negMoment = negSum/(lenRpastList-reqlen)
+        var diff = positiveSum - negMoment;
+        console.log(positiveMoment);
 
+        $('#momentum').css({'display' : 'block'})
+        $('#momentum').on('click', function(){
+      
+          console.log("in moment");
+          $('#table-4').append('<tr style = "color : white"><td style = "color : white">' + positiveMoment + '</td>\
+          <td>' + negMoment + '</td><td>' + diff + '</td></tr>');
+        });
+        
+        
+    });  
 });
 
   
