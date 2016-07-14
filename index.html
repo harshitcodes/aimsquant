@@ -72,6 +72,54 @@
             
             <span id = "inlineCheckbox5">DLF<input class="check" style="float : right" type="checkbox" id="inlineCheckbox5" value="DLF">        
           </li>
+          <li class="list-group-item">
+            
+            <span id = "inlineCheckbox5">APOLLOHOSP<input class="check" style="float : right" type="checkbox" id="inlineCheckbox5" value="APOLLOHOSP">        
+          </li>
+          <li class="list-group-item">
+            
+            <span id = "inlineCheckbox5">ASHOKLEY<input class="check" style="float : right" type="checkbox" id="inlineCheckbox5" value="ASHOKLEY">        
+          </li>
+          <li class="list-group-item">
+            
+            <span id = "inlineCheckbox5">BAJFINANCE<input class="check" style="float : right" type="checkbox" id="inlineCheckbox5" value="BAJFINANCE">        
+          </li>
+          <li class="list-group-item">
+            
+            <span id = "inlineCheckbox5">BAJAJFINSV<input class="check" style="float : right" type="checkbox" id="inlineCheckbox5" value="BAJAJFINSV">        
+          </li>
+          <li class="list-group-item">
+            
+            <span id = "inlineCheckbox5">BEL<input class="check" style="float : right" type="checkbox" id="inlineCheckbox5" value="BEL">        
+          </li>
+          <li class="list-group-item">
+            
+            <span id = "inlineCheckbox5">BHARATFORG<input class="check" style="float : right" type="checkbox" id="inlineCheckbox5" value="BHARATFORG">        
+          </li>
+          <li class="list-group-item">
+            
+            <span id = "inlineCheckbox5">BRITANNIA<input class="check" style="float : right" type="checkbox" id="inlineCheckbox5" value="BRITANNIA">        
+          </li><li class="list-group-item">
+            
+            <span id = "inlineCheckbox5">CADILAHC<input class="check" style="float : right" type="checkbox" id="inlineCheckbox5" value="DLF">        
+          </li>
+          <li class="list-group-item">
+            
+            <span id = "inlineCheckbox5">DABUR<input class="check" style="float : right" type="checkbox" id="inlineCheckbox5" value="DABUR">        
+          </li>
+          <li class="list-group-item">
+            
+            <span id = "inlineCheckbox5">CONCOR<input class="check" style="float : right" type="checkbox" id="inlineCheckbox5" value="CONCOR">        
+          </li>
+          <li class="list-group-item">
+            
+            <span id = "inlineCheckbox5">DIVISLAB<input class="check" style="float : right" type="checkbox" id="inlineCheckbox5" value="DIVISLAB">        
+          </li>
+          <li class="list-group-item">
+            
+            <span id = "inlineCheckbox5">NHPC<input class="check" style="float : right" type="checkbox" id="inlineCheckbox5" value="NHPC">        
+          </li>
+
 
         </ul>
   			<div class="form-group">
@@ -121,8 +169,10 @@
        </div> 
        <br><br>
 
+       <button class="btn" id="tab-2">Table-2</button>
+       <br><br>
        <div class = "response-table">
-        <h2 id="query-term">Sorted Table </h2>
+        <h2 id="query-term">Top Results Based on Rpast </h2>
         <table class="table table-hover">
             <thead>
               <tr style = "color : white">
@@ -136,9 +186,25 @@
             </tbody>
         </table>
        </div> 
+
+       <div class = "response-table">
+        <h2 id="query-term">Bottom Results Based on Rpast</h2>
+        <table class="table table-hover">
+            <thead>
+              <tr style = "color : white">
+                <th>Symbol</th>
+                <th>Rpast</th>
+                <th>Rfuture</th>
+              </tr>
+            </thead>
+            <tbody id="table-3">
+              
+            </tbody>
+        </table>
+       </div> 
         
       </div>
-
+      
   	</section>
    </div> 
 
@@ -172,21 +238,23 @@
 <script type="text/javascript">
   $('#submit').on('click', function(e) {
   e.preventDefault();
+  // $('.response-table').innerHtml(" ");
   var checkedValues = $('.check:checked').map(function() {
     return this.value;
   }).get();
-  var rPastArray = [];
-  var rFutureArray = [];
+  rPastDictList = [];
+  rFutureDictList = [];
 
   $.each(checkedValues, function(i){
-    
+
       var formData = {
         'symbol' : checkedValues[i],
         'startDate' : $('input[name=start-date]').val(),
         'endDate' : $('input[name=end-date]').val()
       }
       var api_url = "https://www.quandl.com/api/v3/datasets/NSE/" + formData['symbol'] + ".json?api_key=gWf2CLShwrGUBVnqzsT4&start_date=" +formData['startDate'] + "&end_date=" + formData['endDate'] + "yyyy-mm-dd"  
-
+      // var rPastArray = [];
+      // var rFutureArray = [];
       // console.log(api_url);
       $.ajax({
         type: 'GET',
@@ -206,12 +274,17 @@
           // console.log(resArray[len-1][7]);
           var rPast = Math.log(resArray[mid-1][7]/(resArray[mid][1]));
           var rFuture = Math.log(resArray[len-1][7]/(resArray[mid][1]));
-          // console.log();
-          // console.log(rPast);
-          // console.log(rFuture);
-          rPastArray.push(rPast);
-          rFutureArray.push(rFuture);
-          console.log(rPastArray)
+          
+
+          rPastDictList.push({
+            key: checkedValues[i],
+            value: rPast,
+            rfut: rFuture
+            });
+          // rFutureDictList.push({
+          //   key : checkedValues[i],
+          //   value : rFuture
+          // });
 
           // table to show the results of the rpast and rfurture for the searched symbol
           $('.response-table').css({'display': "block"});
@@ -219,40 +292,53 @@
           $('#table-1').append('<tr style = "color : white"><td style = "color : white">' + formData['symbol'] + '</td>\
             <td>' + rPast + '</td><td>' + rFuture + '</td></tr>');
 
-
-          // rPastArray.sort(function(a, b){return b-a});
-          // rFutureArray.sort(function(a, b){return b-a});
-
-          // lenRPastArray = rPastArray.length;
-          // lenRFutureArray = rFuture.length;
-
-
         },
+
         error: function(xhr){
           $('#query-term').innerHtml("Sorry! No results for the query entered. Please Try Again.");
           console.log("An error occured!! ")
 
         },
-
        });
     });
-    rPastArray.sort(function(a, b){return b-a});
-    rFutureArray.sort(function(a, b){return b-a});
-    // console.log("jjsahdkjha")
-    console.log(rPastArray);
 
-    $.each(checkedValues, function(i) {
-      console.log(checkedValues[i])
-      $('#table-2').append('<tr style = "color : white"><td style = "color : white">' + checkedValues[i] + '</td>\
-            <td>' + rPastArray[i] + '</td><td>' + rFutureArray[i] + '</td></tr>');
-    });
+    $('#tab-2').on('click', function(){
+        console.log("in table-2");
+        console.log(rPastDictList);
+        function sortByRpast(a, b){
+          var aValue = a.value;
+          var bValue = b.value;
+          return ((aValue > bValue) ? -1 : ((aValue < bValue) ? 1 : 0));
+        }  
+        
+        rPastDictList.sort(sortByRpast);
+        console.log(rPastDictList);  
+        lenRpastList = rPastDictList.length;
+        reqlen = 0.1*(lenRpastList); 
+        console.log(reqlen);
+        for(var i =0; i<=reqlen; i++){
+          
+          $('#table-2').append('<tr style = "color : white"><td style = "color : white">' + rPastDictList[i]["key"] + '</td>\
+          <td>' + rPastDictList[i]["value"] + '</td><td>' + rPastDictList[i]["rfut"] + '</td></tr>');
+
+        }
+
+        for(var i =reqlen-1; i>=0; i--){
+          
+          $('#table-3').append('<tr style = "color : white"><td style = "color : white">' + rPastDictList[i]["key"] + '</td>\
+          <td>' + rPastDictList[i]["value"] + '</td><td>' + rPastDictList[i]["rfut"] + '</td></tr>');
+
+        }
+        
+        
+    });  
+        
+    
 
 });
-  // $('#submit').on('click', function(e) {
-  //     e.preventDefault();
-  //     var formData = JSON.stringify($('form').serializeArray());
-  //     console.log(formData);
-  // });
+
+  
+
   
 </script>
 
